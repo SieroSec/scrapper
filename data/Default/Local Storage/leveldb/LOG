@@ -1,0 +1,8 @@
+2020/12/22-18:53:43.712 8b2c Reusing MANIFEST C:\projects\scrapper\data\Default\Local Storage\leveldb/MANIFEST-000001
+2020/12/22-18:53:43.713 8b2c Recovering log #3
+2020/12/22-18:53:43.713 8b2c Level-0 table #3: started
+2020/12/22-18:53:43.721 8b2c Level-0 table #3: 13182 bytes OK
+2020/12/22-18:53:43.722 8b2c Recovering log #4
+2020/12/22-18:53:43.722 8b2c Reusing old log C:\projects\scrapper\data\Default\Local Storage\leveldb/000004.log 
+2020/12/22-18:53:43.725 8b2c Delete type=0 #3
+2020/12/22-18:53:43.725 8b2c Delete type=2 #5
