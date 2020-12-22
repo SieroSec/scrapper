@@ -31,15 +31,22 @@ async function main() {
 
       const html = await page.content();
       const $ = cheerio.load(html);
-      //$(".result-title").each((index, element) => console.log($(element).text()));
-      $(".result-title").each((index, element) => console.log($(element).attr("href")));
+      // $(".result-title").each((index, element) => console.log($(element).text()));
+      // $(".result-title").each((index, element) => console.log($(element).attr("href")));
 
+      const results = $(".result-title").map((index, element) => {
+         const title = $(element).text();
+         const url = $(element).attr("href");
+         return { title, url };
+      }).get();
+
+      console.log(results);
       await browser.close();
    } catch (e) {
       console.log(e);
       await browser.close();
    } finally {
-      //console.log(browser);
+      //console.log(results);
       //if (browser) { await browser.close(); }
    }
 
