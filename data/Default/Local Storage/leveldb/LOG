@@ -1,5 +1,5 @@
-2020/12/22-19:15:07.142 5d3c Reusing MANIFEST C:\projects\scrapper\data\Default\Local Storage\leveldb/MANIFEST-000001
-2020/12/22-19:15:07.143 5d3c Recovering log #6
-2020/12/22-19:15:07.143 5d3c Reusing old log C:\projects\scrapper\data\Default\Local Storage\leveldb/000006.log 
-2020/12/22-19:15:07.438 5d3c Level-0 table #9: started
-2020/12/22-19:15:07.442 5d3c Level-0 table #9: 8035 bytes OK
+2020/12/22-19:43:13.884 3ce4 Reusing MANIFEST C:\projects\scrapper\data\Default\Local Storage\leveldb/MANIFEST-000001
+2020/12/22-19:43:13.890 3ce4 Recovering log #17
+2020/12/22-19:43:13.890 3ce4 Reusing old log C:\projects\scrapper\data\Default\Local Storage\leveldb/000017.log 
+2020/12/22-19:43:14.268 1d08 Level-0 table #20: started
+2020/12/22-19:43:14.272 1d08 Level-0 table #20: 8755 bytes OK

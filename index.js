@@ -34,11 +34,30 @@ async function main() {
       // $(".result-title").each((index, element) => console.log($(element).text()));
       // $(".result-title").each((index, element) => console.log($(element).attr("href")));
 
-      const results = $(".result-title").map((index, element) => {
-         const title = $(element).text();
-         const url = $(element).attr("href");
-         return { title, url };
+      // const results = $(".result-title").map((index, element) => {
+      //    const title = $(element).text();
+      //    const url = $(element).attr("href");
+      //    return { title, url };
+      // }).get();
+
+      const results = $(".result-info").map((index, element) => {
+         const titleElement = $(element).find(".result-title");
+         const dateElement = $(element).find(".result-date");
+         const hoodElement = $(element).find(".result-hood");
+
+         const title = $(titleElement).text();
+         const url = $(titleElement).attr("href");
+
+         const town = $(hoodElement).text()
+            .trim() // remove space in front of town
+            .replace("(", "")
+            .replace(")", "");
+
+         const datePosted = new Date($(dateElement).attr("datetime"));
+
+         return { title, url, town, datePosted };
       }).get();
+
 
       console.log(results);
       await browser.close();
