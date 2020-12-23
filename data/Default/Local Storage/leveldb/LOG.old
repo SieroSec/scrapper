@@ -1,8 +1,0 @@
-2020/12/22-19:35:27.522 385c Reusing MANIFEST C:\projects\scrapper\data\Default\Local Storage\leveldb/MANIFEST-000001
-2020/12/22-19:35:27.523 385c Recovering log #15
-2020/12/22-19:35:27.523 385c Level-0 table #17: started
-2020/12/22-19:35:27.532 385c Level-0 table #17: 8756 bytes OK
-2020/12/22-19:35:27.532 385c Recovering log #17
-2020/12/22-19:35:27.532 385c Reusing old log C:\projects\scrapper\data\Default\Local Storage\leveldb/000017.log 
-2020/12/22-19:35:27.534 385c Delete type=0 #15
-2020/12/22-19:35:27.534 385c Delete type=2 #18

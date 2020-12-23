@@ -1,46 +1,34 @@
 const request = require("request-promise");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
+const mongoose = require("mongoose");
 const fs = require("fs");
 
-const scrapResults = [
-   {
-      title: "Miau",
-      datePostes: new Date(),
-      town: "(Zurich)",
-      url: "http://",
-      jobDescription: "",
-      salary: "50000"
-   }
-]
+const Listing = require("./model/Listing.js");
 
-//$(".result-title").each((index, element) => console.log($(element).text()))
+async function connectToMongoDb() {
+   await mongoose.connect("mongodb://localhost:27017/scraper", { useNewUrlParser: true });
+   console.log("CONNECTED to mongodb.");
+}
 
-async function main() {
-   // const html = await request.get("https://reactnativetutorial.net/css-selectors");
-   // // fs.writeFileSync("./test.html", html);
+async function disconnectToMongoDb() {
+   await mongoose.disconnect();;
+   console.log("DISCONNECTED from mongodb.");
+}
 
-   // const cher = await cheerio.load(html);
-   // const theText = cher("h1").text();
-   // console.log(theText);
+
+async function scrapeListings(pageObj) {
    try {
-      const browser = await puppeteer.launch({ headless: true, userDataDir: './data', });
-      const page = await browser.newPage();
-      await page.goto("https://zurich.craigslist.org/search/jjj");
+      // const browser = await puppeteer.launch({ headless: true, userDataDir: './data', });
+      // const page = await browser.newPage();
+      const url = "https://zurich.craigslist.org/search/jjj"
+      await pageObj.goto(url);
       //await page.screenshot({ path: 'screenshot.png' });
 
-      const html = await page.content();
+      const html = await pageObj.content();
       const $ = cheerio.load(html);
-      // $(".result-title").each((index, element) => console.log($(element).text()));
-      // $(".result-title").each((index, element) => console.log($(element).attr("href")));
 
-      // const results = $(".result-title").map((index, element) => {
-      //    const title = $(element).text();
-      //    const url = $(element).attr("href");
-      //    return { title, url };
-      // }).get();
-
-      const results = $(".result-info").map((index, element) => {
+      const listings = $(".result-info").map((index, element) => {
          const titleElement = $(element).find(".result-title");
          const dateElement = $(element).find(".result-date");
          const hoodElement = $(element).find(".result-hood");
@@ -58,21 +46,65 @@ async function main() {
          return { title, url, town, datePosted };
       }).get();
 
+      //console.log(results);
+      //await browser.close();
+      return listings;
+   } catch (e) {
+      console.log(e);
+      //await browser.close();
+   } finally {
+      //console.log(results);
+   }
+}
 
-      console.log(results);
+async function scrapeJobDescriptions(listings, page) {
+   //for (var i = 0; i < listings.length; i++) {
+   for (var i = 0; i < 5; i++) {
+      await page.goto(listings[i].url);
+      const html = await page.content();
+      const $ = cheerio.load(html);
+      const jobDescription = $("#postingbody").text();
+      listings[i].jobDescription = jobDescription;
+
+      const compensation = $("p.attrgroup > span").text();
+      listings[i].compensation = compensation.replace("Vergütung:", "; Vergütung:");
+
+      // console.log(listings[i].jobDescription);
+      // console.log(listings[i].compensation);
+
+      const listingModel = new Listing(listings[i]);
+      await listingModel.save();
+
+      await sleep(1000);
+   }
+   return listings
+}
+
+async function sleep(miliseconds) {
+   return new Promise(resolve => setTimeout(resolve, miliseconds));
+}
+
+
+async function main(url) {
+   //const page = "https://zurich.craigslist.org/search/jjj";
+   try {
+      connectToMongoDb();
+      const browser = await puppeteer.launch({ headless: true, userDataDir: './data', });
+      const page = await browser.newPage();
+
+      const listings = await scrapeListings(page);
+      //console.log(listings);
+
+      const listingsWithJobDescriptions = await scrapeJobDescriptions(listings, page);
+
+
+      console.log(listingsWithJobDescriptions);
       await browser.close();
+      disconnectToMongoDb();
    } catch (e) {
       console.log(e);
       await browser.close();
-   } finally {
-      //console.log(results);
-      //if (browser) { await browser.close(); }
    }
-
-   // if (browser && browser.process() != null) {
-   //    browser.process().kill('SIGINT');
-   // }
-
 }
 
 main();
