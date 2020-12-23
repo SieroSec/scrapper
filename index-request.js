@@ -87,39 +87,97 @@ const sample = [{
 }]
 
 function main() {
+   let cnt = 0;
+   //   $("div#joblist>div.cvpage-module.cvo_module_offers>div.cvo_module_offers_wrap>div.cvo_module_offer>div.cvo_module_offer_content>div.cvo_module_offer_box.offer_content>div.offer_primary>div.offer_primary_info").each((index, element) => {
+   cherObj = $("div#joblist>div.cvpage-module.cvo_module_offers>div.cvo_module_offers_wrap>div.cvo_module_offer>div.cvo_module_offer_content>div.cvo_module_offer_box.offer_content>div.offer_primary>div.offer_primary_info");
 
-   $("div#joblist>.cvpage-module.cvo_module_offers>.cvo_module_offers_wrap>.cvo_module_offer>.cvo_module_offer_content>.cvo_module_offer_box.offer_content>.offer_primary>.offer_primary_info").each((index, element) => {
-      const jobId = $(element).find(".offer-primary-meta.clearfix>div.offer_save_feature").attr("id").replace("save", "");
-      const jobUrl = $(element).find("h2>a:not(.newJobsLink)").attr("href");
-      const jobTitle = $(element).find("h2>a:not(.newJobsLink)").text();
-      const jobSalary = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_salary>li:last-child>span").text();
-      const jobCompany = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta>li.offer-company>span[itemprop='hiringOrganization']>a").text();
-      const jobLocation = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta>li.offer-location>span[itemprop='jobLocation']>a").text();
-      const jobDeadline = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta.offer_dates>li:last").text();
-      const jobAdDateTxt = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta.offer_dates>li:first").attr("title");
-      const jobAdDateNum = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta.offer_dates>li>span[itemprop='datePosted']").attr("content");
+   cherObj.each((index, element) => {
+      cnt++;
+      // works too:
+      // const jobId = $(element).find(".offer-primary-meta.clearfix>div.offer_save_feature").attr("id").replace("save", "");
+      // const jobUrl = $(element).find("h2>a:not(.newJobsLink)").attr("href");
+      // const jobTitle = $(element).find("h2>a:not(.newJobsLink)").text();
+      // const jobSalary = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_salary>li:last-child>span").text();
+      // const jobCompany = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta>li.offer-company>span[itemprop='hiringOrganization']>a").text();
+      // const jobLocation = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta>li.offer-location>span[itemprop='jobLocation']>a").text();
+      // const jobDeadline = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta.offer_dates>li:last").text();
+      // const jobAdDateTxt = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta.offer_dates>li:first").attr("title");
+      // const jobAdDateNum = $(element).find(".offer-primary-meta.clearfix>ul.cvo_module_offer_meta.offer_dates>li>span[itemprop='datePosted']").attr("content");
+
+      const jobId = $(element)
+         .children(".offer-primary-meta.clearfix")
+         .children("div.offer_save_feature")
+         .attr("id")
+         .replace("save", "");
+
+      const jobUrl = $(element)
+         .children("h2")
+         //.children("a:not(.newJobsLink)")
+         .children("a")
+         .not(".newJobsLink")
+         .attr("href");
+
+      const jobTitle = $(element)
+         .children("h2")
+         //.children("a:not(.newJobsLink)")
+         .children("a")
+         .not(".newJobsLink")
+         .text();
+
+      const jobSalary = $(element)
+         .children("div.offer-primary-meta.clearfix")
+         .children("ul.cvo_module_offer_salary")
+         .children("li:last-child")
+         .children("span")
+         .text();
+
+      const jobCompany = $(element)
+         .children("div.offer-primary-meta.clearfix")
+         .children("ul.cvo_module_offer_meta")
+         .children("li.offer-company")
+         .children("span[itemprop='hiringOrganization']")
+         .children("a")
+         .text();
+
+      const jobLocation = $(element)
+         .children("div.offer-primary-meta.clearfix")
+         .children("ul.cvo_module_offer_meta")
+         .children("li.offer-location")
+         .children("span[itemprop='jobLocation']")
+         .children("a")
+         .text();
+
+      const jobDeadline = $(element)
+         .children("div.offer-primary-meta.clearfix")
+         .children("ul.cvo_module_offer_meta.offer_dates")
+         .children("li:last")
+         .text();
+
+      const jobAdDateTxt = $(element)
+         .children("div.offer-primary-meta.clearfix")
+         .children("ul.cvo_module_offer_meta.offer_dates")
+         .children("li:first")
+         .attr("title");
+
+      const jobAdDateNum = $(element)
+         .children("div.offer-primary-meta.clearfix")
+         .children("ul.cvo_module_offer_meta.offer_dates")
+         .children("li")
+         .children("span[itemprop='datePosted']")
+         .attr("content");
 
       const jobOffer = { jobId, jobUrl, jobTitle, jobSalary, jobCompany, jobLocation, jobDeadline, jobAdDateTxt, jobAdDateNum }
       scrapeResults.push(jobOffer);
 
-
-      // console.log(jobOffer);
-      // sleep(2000);
-
-      // const title = resultTitle.text();
-      // const url = resultTitle.attr("href");
       // const datePosted = new Date(
       //    $(element)
       //       .children("time")
       //       .attr("datetime")
       // );
-      // const hood = $(element)
-      //    .find(".result-hood")
-      //    .text();
-      // const scrapeResult = { title, url, datePosted, hood };
-      // scrapeResults.push(scrapeResult);
    });
    console.log(scrapeResults);
+   console.log(`scrape length: ${scrapeResults.length}`);
+   console.log(`counter: ${cnt}`);
 }
 
 main();
